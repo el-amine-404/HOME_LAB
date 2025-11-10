@@ -21,7 +21,7 @@
 #   + Distro maintainers provide unofficial distributions of Docker packages in APT.
 #   + This script is written for debian/linux mint/ubuntu
 
-DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 set -euo pipefail
 
 step() {
@@ -111,8 +111,7 @@ EOF
   esac
 
 
-  sudo apt-get update
-
+  sudo apt-get -yq update > /dev/null
 
 }
 
