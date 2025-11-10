@@ -96,7 +96,7 @@ add_docker_apt() {
       sudo curl -fsSL "https://download.docker.com/linux/${OS}/gpg" -o /etc/apt/keyrings/docker.asc
       sudo chmod a+r /etc/apt/keyrings/docker.asc
       # https://wiki.debian.org/SourcesList
-      sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+      sudo tee /etc/apt/sources.list.d/docker.sources > /dev/null <<EOF
 Types: deb
 URIs: https://download.docker.com/linux/debian
 Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
@@ -117,7 +117,7 @@ EOF
 
 install_docker() {
   # Install the Docker packages (latest version)
-  sudo apt-get -yq install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo apt-get -yq install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
   docker --version || true
   docker compose version || true
 
