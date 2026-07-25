@@ -3,6 +3,10 @@
 the Makefile was created so that the installation, setup and management of the various
 docker servcies is easier. contributions are welcome to make it even better
 
+- install dependencies
+```bash
+sudo apt update && sudo apt install make -y
+```
 - clone and cd to the repo
 ```bash
 git clone https://github.com/el-amine-404/batlab && cd batlab
