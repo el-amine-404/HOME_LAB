@@ -24,12 +24,22 @@ SITES_ROOT   ?= /srv/sites
 PUID := $(shell id -u)
 PGID := $(shell id -g)
 
-.PHONY: help list setup network up down restart pull config logs ps
+.PHONY: help list setup network up down restart pull config logs ps check-stack check-all-confirm
 
 define compose-loop
 @for s in $(TARGETS); do \
-	echo "==> $(1) $$s"; \
-	$(DC) -f compose/$$s/docker-compose.yml $(1) $(2) || exit 1; \
+	if [ -n "$(SERVICE)" ]; then \
+		if [ "$(1)" = "down" ]; then \
+			echo "==> rm -s -f $$s (service: $(SERVICE))"; \
+			$(DC) -f compose/$$s/docker-compose.yml rm -s -f $(SERVICE) || exit 1; \
+		else \
+			echo "==> $(1) $$s (service: $(SERVICE))"; \
+			$(DC) -f compose/$$s/docker-compose.yml $(1) $(2) $(SERVICE) || exit 1; \
+		fi; \
+	else \
+		echo "==> $(1) $$s"; \
+		$(DC) -f compose/$$s/docker-compose.yml $(1) $(2) || exit 1; \
+	fi; \
 done
 endef
 
@@ -37,24 +47,23 @@ help:
 	@echo ""
 	@echo "Maa qall wa dall"
 	@echo ""
-	@echo "  make list"
-	@echo "  make setup"
-	@echo "  make up"
-	@echo "  make down"
-	@echo "  make restart"
-	@echo "  make pull"
-	@echo "  make config"
-	@echo "  make logs"
-	@echo "  make check-env"
-	@echo "  make network"
-	@echo "  make pull"
-	@echo "  make ps"
-	@echo "  make status"
-	@echo "  make update"
-	@echo "  make shell"
-	@echo "  make validate"
-	@echo "  make clean"
-	@echo "  make new"
+	@echo "  make list       - List all discovered stacks"
+	@echo "  make setup      - Create base directories and symlinks"
+	@echo "  make up         - Start stacks (STACK=<name> [SERVICE=<name>])"
+	@echo "  make down       - Stop and remove stacks (STACK=<name> [SERVICE=<name>])"
+	@echo "  make restart    - Restart stacks (STACK=<name> [SERVICE=<name>])"
+	@echo "  make pull       - Pull new images (STACK=<name> [SERVICE=<name>])"
+	@echo "  make config     - Validate Compose file (STACK=<name> [SERVICE=<name>])"
+	@echo "  make logs       - View container logs (STACK=<name> [SERVICE=<name>])"
+	@echo "  make check-env  - Check if the environment file exists"
+	@echo "  make network    - Create the Docker network if it doesn't exist"
+	@echo "  make ps         - List running containers"
+	@echo "  make status     - Show status of all stacks or a specific stack (STACK=<name>)"
+	@echo "  make update     - Pull and recreate stacks (STACK=<name>)"
+	@echo "  make shell      - Open a shell in a container (STACK=<name> [SERVICE=<name>])"
+	@echo "  make validate   - Validate that all compose directories have a docker-compose.yml"
+	@echo "  make clean      - Prune unused docker images, containers, and volumes"
+	@echo "  make new        - Create a new stack template (STACK=<name>)"
 	@echo ""
 
 confirm:
@@ -68,28 +77,57 @@ list:
 check-env:
 	@test -f $(ENV) || (echo "Missing $(ENV)" && exit 1)
 
+check-all-confirm:
+	@if [ -z "$(STACK)" ]; then \
+		printf "No STACK specified. This will apply to ALL stacks. Are you sure? [y/N] "; \
+		read ans; \
+		[ "$$ans" = "y" ] || [ "$$ans" = "Y" ] || { echo "Aborted."; exit 1; }; \
+	fi
+
+check-stack: check-env
+	@if [ -n "$(STACK)" ]; then \
+		if [ ! -f "compose/$(STACK)/docker-compose.yml" ]; then \
+			echo "Error: Stack '$(STACK)' does not exist."; \
+			exit 1; \
+		fi; \
+		if [ -n "$(SERVICE)" ]; then \
+			services="$$($(DC) -f compose/$(STACK)/docker-compose.yml config --services 2>/dev/null)"; \
+			if ! echo "$$services" | grep -qx "$(SERVICE)"; then \
+				echo "Error: Service '$(SERVICE)' does not exist in stack '$(STACK)'."; \
+				if [ -n "$$services" ]; then \
+					echo "Available services in '$(STACK)':"; \
+					echo "$$services" | sed 's/^/  - /'; \
+				fi; \
+				exit 1; \
+			fi; \
+		fi; \
+	elif [ -n "$(SERVICE)" ]; then \
+		echo "Error: You must specify STACK when specifying SERVICE."; \
+		exit 1; \
+	fi
+
 network:
 	@docker network inspect $(NET) >/dev/null 2>&1 || \
 		docker network create $(NET)
 
-up: check-env network
+up: network check-stack check-all-confirm
 	$(call compose-loop,up,-d)
 
-down: check-env
+down: check-stack check-all-confirm
 	$(call compose-loop,down)
 
-restart: check-env
+restart: check-stack check-all-confirm
 	$(call compose-loop,restart)
 
-pull: check-env
+pull: check-stack check-all-confirm
 	$(call compose-loop,pull)
 
-config: check-env
+config: check-stack check-all-confirm
 	$(call compose-loop,config,-q)
 
-logs: check-env
-	@test -n "$(STACK)" || (echo "Use STACK=<name>" && exit 1)
-	$(DC) -f compose/$(STACK)/docker-compose.yml logs -f --tail=200
+logs: check-stack
+	@test -n "$(STACK)" || (echo "Error: Use STACK=<name> for logs" && exit 1)
+	$(DC) -f compose/$(STACK)/docker-compose.yml logs -f --tail=200 $(SERVICE)
 
 ps:
 	@docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'

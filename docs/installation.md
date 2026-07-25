@@ -17,8 +17,22 @@ make network
 ```
 - run the compose for one stack or all the stacks
 ```bash
-make up STACK=<name>
+make up STACK=<name> [SERVICE=<name>]
 ```
+
+### Understanding Stacks vs. Services
+
+When running commands via the `Makefile`, you will often see references to `STACK` and `SERVICE`. It is important to know the difference:
+
+- **`STACK`**: Refers to the directory name inside `compose/` that holds a `docker-compose.yml` file. It groups related applications together.
+- **`SERVICE`**: Refers to a specific container defined *inside* that stack's `docker-compose.yml` file.
+
+**Example Usage:**
+If you have a stack named `arr` (which contains multiple media services like `sonarr` and `radarr`):
+- `make up STACK=arr` → Starts **all** services in the `arr` folder.
+- `make restart STACK=arr SERVICE=sonarr` → Restarts **only** the `sonarr` container inside the `arr` stack.
+
+You must always specify the `STACK` so the Makefile knows which folder to look in, but you only need to specify the `SERVICE` if you want to target a single container.
 
 ### Configure secrets
 
