@@ -1,0 +1,40 @@
+name: ${NAVIDROME_PROJECT_NAME}
+services:
+  navidrome:
+    image: ${IMAGE_NAVIDROME}:${TAG_NAVIDROME}
+    container_name: navidrome
+    user: ${PUID}:${PGID}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - ND_SCANSCHEDULE=1h
+      - ND_LOGLEVEL=info
+      - ND_SESSIONTIMEOUT=24h
+      - ND_BASEURL=""
+      # Last.fm Integration
+      - ND_LASTFM_APIKEY=${NAVIDROME_LASTFM_APIKEY}
+      - ND_LASTFM_SECRET=${NAVIDROME_LASTFM_SECRET}
+      - ND_LASTFM_LANGUAGE=en
+      - /etc/localtime:/etc/localtime:ro
+    volumes:
+      - ${VOLUMES_ROOT}/navidrome/data:/data
+      - ${DATA_ROOT}/media/music:/music:ro
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - home_server
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4533/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+networks:
+  home_server:
+    external: true
+    name: home_server

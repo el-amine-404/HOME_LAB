@@ -47,6 +47,12 @@
         statusStyle: "dot"
 
 - Media:
+    - Navidrome:
+        icon: navidrome
+        href: http://navidrome.homelab.lan
+        description: Music Server
+        siteMonitor: http://navidrome:4533/ping
+        statusStyle: "dot"
     - Jellyfin:
         icon: jellyfin
         href: http://jellyfin.homelab.lan

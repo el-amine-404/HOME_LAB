@@ -159,6 +159,7 @@ setup:
 		$(VOLUMES_ROOT)/jellyfin/log \
 		$(VOLUMES_ROOT)/netdata/lib \
 		$(VOLUMES_ROOT)/netdata/cache \
+		$(VOLUMES_ROOT)/navidrome/data \
 		$(VOLUMES_ROOT)/portainer \
 		$(VOLUMES_ROOT)/uptime-kuma/data \
 		$(VOLUMES_ROOT)/bazarr \
