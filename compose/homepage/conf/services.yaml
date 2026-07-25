@@ -23,13 +23,6 @@
         description: Service Monitor
         siteMonitor: http://uptime-kuma:3001
         statusStyle: "dot"
-    - Netdata:
-        icon: netdata
-        href: http://netdata.homelab.lan
-        description: Real-time Metrics
-        siteMonitor: http://192.168.1.3:19999
-        statusStyle: "dot"
-
 
 - Utilities:
     - FileBrowser:
