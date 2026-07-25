@@ -149,6 +149,7 @@ setup:
 		$(VOLUMES_ROOT)/adguardhome/data \
 		$(VOLUMES_ROOT)/caddy/data \
 		$(VOLUMES_ROOT)/caddy/config \
+		$(VOLUMES_ROOT)/diun/data \
 		$(VOLUMES_ROOT)/filebrowser \
 		$(VOLUMES_ROOT)/homepage/icons \
 		$(VOLUMES_ROOT)/homepage/images \
