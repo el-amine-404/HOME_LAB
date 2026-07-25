@@ -132,7 +132,7 @@ logs: check-stack
 ps:
 	@docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
 
-setup:
+setup: check-env
 	@echo "==> Creating base directories..."
 	sudo mkdir -p \
 		/srv \
@@ -177,6 +177,13 @@ setup:
 		$(SITES_ROOT) \
 		$(MEDIA_ROOT) \
 		$(VOLUMES_ROOT)
+
+	@echo "==> Symlinking .env to all stacks..."
+	@for d in compose/*; do \
+		if [ -d "$$d" ]; then \
+			ln -sf ../.env "$$d/.env"; \
+		fi; \
+	done
 
 	@echo
 	@echo "Setup complete."
