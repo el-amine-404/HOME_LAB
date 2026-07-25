@@ -88,7 +88,7 @@
         icon: prowlarr
         href: http://prowlarr.homelab.lan
         description: Indexer Manager
-        siteMonitor: http://prowlarr:9696
+        siteMonitor: http://prowlarr:9696/ping
         statusStyle: "dot"
     - Bazarr:
         icon: bazarr
