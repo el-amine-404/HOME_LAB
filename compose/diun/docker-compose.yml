@@ -1,0 +1,38 @@
+name: ${DIUN_PROJECT_NAME}
+services:
+  diun:
+    image: ${IMAGE_DIUN}:${TAG_DIUN}
+    container_name: diun
+    restart: unless-stopped
+    command: serve
+    volumes:
+      - ${VOLUMES_ROOT}/diun/data:/data
+      - ${CONFIGS_ROOT}/diun/conf/diun.yml:/diun.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=${TZ}
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - DIUN_NOTIF_DISCORD_WEBHOOKURL=${DISCORD_WEBHOOK_DIUN}
+    healthcheck:
+      test: ["CMD", "diun", "healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - home_server
+networks:
+  home_server:
+    external: true
+    name: home_server

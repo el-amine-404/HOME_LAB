@@ -1,0 +1,39 @@
+db:
+  path: diun.db
+
+watch:
+  workers: 5
+  schedule: "0 3 * * *"
+  jitter: 30s
+  firstCheckNotif: false
+  runOnStartup: true
+  compareDigest: true
+
+defaults:
+  watchRepo: true
+  maxTags: 10
+  notifyOn:
+    - new
+    - update
+  sortTags: semver
+  excludeTags:
+    - dev
+  includeTags:
+    - '^v?\d+\.\d+\.\d+$'
+
+metrics:
+  enabled: false
+  addr: ":9090"
+  path: /metrics
+
+notif:
+  discord:
+    renderEmbeds: true
+    renderFields: true
+    timeout: 10s
+    templateBody: |
+      Docker tag {{ .Entry.Image }} which you subscribed to through {{ .Entry.Provider }} provider has been released.
+
+providers:
+  docker:
+    watchByDefault: true
