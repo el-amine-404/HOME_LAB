@@ -7,6 +7,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     read_only: true
+    tmpfs:
+      - /home/appuser/.config
     cap_drop:
       - ALL
     security_opt:
