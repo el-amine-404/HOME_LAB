@@ -5,7 +5,7 @@ docker servcies is easier. contributions are welcome to make it even better
 
 - clone and cd to the repo
 ```bash
-git clone https://github.com/el-amine-404/batlab && cd batlabe
+git clone https://github.com/el-amine-404/batlab && cd batlab
 ```
 - create the required directories, symlink the configs folder to the `$CONFIGS_ROOT`, fix ownership
 ```bash
