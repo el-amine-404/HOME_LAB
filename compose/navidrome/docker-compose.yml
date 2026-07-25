@@ -11,7 +11,6 @@ services:
       - ND_SCANSCHEDULE=1h
       - ND_LOGLEVEL=info
       - ND_SESSIONTIMEOUT=24h
-      - ND_BASEURL=""
       # Last.fm Integration
       - ND_LASTFM_APIKEY=${NAVIDROME_LASTFM_APIKEY}
       - ND_LASTFM_SECRET=${NAVIDROME_LASTFM_SECRET}
