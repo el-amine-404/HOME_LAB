@@ -31,6 +31,7 @@ local/
 logs/
 .cache
 compose/netdata/conf/
+compose/adguardhome/conf/
 
 # OS / editor ephemera ---------------------------------------------------------
 *.log

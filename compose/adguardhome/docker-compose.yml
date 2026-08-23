@@ -7,7 +7,7 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - ${CONFIGS_ROOT}/adguardhome/conf:/opt/adguardhome/conf
+      - ${VOLUMES_ROOT}/adguardhome/conf:/opt/adguardhome/conf
       - ${VOLUMES_ROOT}/adguardhome/data:/opt/adguardhome/work
     network_mode: host
     environment:

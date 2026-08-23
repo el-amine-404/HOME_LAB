@@ -146,6 +146,7 @@ setup: check-env
 	@echo "==> Creating service directories..."
 	sudo mkdir -p \
 		$(SITES_ROOT)/caddy/site \
+		$(VOLUMES_ROOT)/adguardhome/conf \
 		$(VOLUMES_ROOT)/adguardhome/data \
 		$(VOLUMES_ROOT)/caddy/data \
 		$(VOLUMES_ROOT)/caddy/config \
