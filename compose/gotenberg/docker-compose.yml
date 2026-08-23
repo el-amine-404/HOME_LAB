@@ -7,6 +7,11 @@ services:
     command:
       - gotenberg
       - --chromium-disable-routes
+      - --api-enable-basic-auth
+      - --api-timeout=120s
+    environment:
+      - GOTENBERG_API_BASIC_AUTH_USERNAME=${GOTENBERG_USERNAME}
+      - GOTENBERG_API_BASIC_AUTH_PASSWORD=${GOTENBERG_PASSWORD}
     logging:
       driver: json-file
       options:
@@ -39,7 +44,7 @@ services:
       # to see if the healthcheck is OK
       # docker inspect --format='{{json .State.Health}}' <MY_CONTAINER> | jq
       # watch docker ps
-      test: ["CMD", "curl", "-fsS", "http://localhost:3000/"]
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/health"]
       interval: 30s
       timeout: 5s
       retries: 5
