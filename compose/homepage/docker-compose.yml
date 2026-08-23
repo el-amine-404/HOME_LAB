@@ -12,7 +12,6 @@ services:
       - ${VOLUMES_ROOT}/homepage/icons:/app/public/icons
       - ${VOLUMES_ROOT}/homepage/images:/app/public/images
       - ${VOLUMES_ROOT}/homepage/logs:/app/config/logs
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
       - HOMEPAGE_ALLOWED_HOSTS=homepage.homelab.lan
