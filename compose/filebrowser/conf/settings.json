@@ -6,6 +6,6 @@
   "database": "/database/filebrowser.db",
   "root": "/srv",
   "auth": {
-    "method": "noauth"
+    "method": "json"
   }
 }
