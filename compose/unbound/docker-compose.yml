@@ -4,7 +4,18 @@ services:
     container_name: unbound
     restart: unless-stopped
     volumes:
-      - ${CONFIGS_ROOT}/unbound/conf/unbound.conf:/opt/unbound/etc/unbound/unbound.conf
+      - ${CONFIGS_ROOT}/unbound/conf/unbound.conf:/opt/unbound/etc/unbound/unbound.conf:ro
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - MKNOD
+      - SETGID
+      - SETUID
+      - SYS_CHROOT
+    security_opt:
+      - no-new-privileges:true
     ports:
       - 127.0.0.1:5335:5335/udp
       - 127.0.0.1:5335:5335/tcp
