@@ -14,7 +14,7 @@ services:
       - JELLYFIN_DATA_DIR=/server_data
       - JELLYFIN_LOG_DIR=/log
     volumes:
-      - ${CONFIGS_ROOT}/jellyfin/conf:/config
+      - ${VOLUMES_ROOT}/jellyfin/conf:/config
       - ${VOLUMES_ROOT}/jellyfin/data:/server_data
       - ${VOLUMES_ROOT}/jellyfin/cache:/cache
       - ${VOLUMES_ROOT}/jellyfin/log:/log

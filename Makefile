@@ -155,6 +155,7 @@ setup: check-env
 		$(VOLUMES_ROOT)/homepage/icons \
 		$(VOLUMES_ROOT)/homepage/images \
 		$(VOLUMES_ROOT)/homepage/logs \
+		$(VOLUMES_ROOT)/jellyfin/conf \
 		$(VOLUMES_ROOT)/jellyfin/data \
 		$(VOLUMES_ROOT)/jellyfin/cache \
 		$(VOLUMES_ROOT)/jellyfin/log \

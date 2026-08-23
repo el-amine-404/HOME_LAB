@@ -32,6 +32,7 @@ logs/
 .cache
 compose/netdata/conf/
 compose/adguardhome/conf/
+compose/jellyfin/conf/
 
 # OS / editor ephemera ---------------------------------------------------------
 *.log
