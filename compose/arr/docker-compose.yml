@@ -42,7 +42,7 @@ services:
       - BLOCK_MALICIOUS=on
       - BLOCK_ADS=on
       - BLOCK_SURVEILLANCE=on
-      - HTTPPROXY=on
+      - FIREWALL_OUTBOUND_SUBNETS=172.19.0.0/16
       - UPDATER_PERIOD=24h
       - UPDATER_VPN_SERVICE_PROVIDERS=protonvpn
       - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
@@ -61,6 +61,11 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
+    extra_hosts:
+      - "lidarr:172.19.10.13"
+      - "radarr:172.19.10.12"
+      - "readarr:172.19.10.14"
+      - "sonarr:172.19.10.11"
 
   lidarr:
     image: ${IMAGE_LIDARR}:${TAG_LIDARR}
@@ -73,7 +78,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     networks:
-      - home_server
+      home_server:
+        ipv4_address: 172.19.10.13
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8686/ping" ]
@@ -113,8 +119,7 @@ services:
     mem_reservation: 256mb
     mem_swappiness: 0
     memswap_limit: 1gb
-    networks:
-      - home_server
+    network_mode: service:gluetun
 
   qbittorrent:
     image: ${IMAGE_QBITTORRENT}:${TAG_QBITTORRENT}
@@ -162,7 +167,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     networks:
-      - home_server
+      home_server:
+        ipv4_address: 172.19.10.12
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:7878/ping" ]
@@ -189,7 +195,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - home_server
+      home_server:
+        ipv4_address: 172.19.10.14
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8787/ping" ]
@@ -232,7 +239,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - home_server
+      home_server:
+        ipv4_address: 172.19.10.11
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8989/ping" ]
