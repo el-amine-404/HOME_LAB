@@ -1,4 +1,4 @@
 http://lidarr.homelab.lan {
   import localSubnets
-	reverse_proxy @localSubnets http://gluetun:8686
+	reverse_proxy @localSubnets http://lidarr:8686
 }

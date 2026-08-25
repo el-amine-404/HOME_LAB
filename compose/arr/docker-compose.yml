@@ -4,10 +4,6 @@ services:
   bazarr:
     image: ${IMAGE_BAZARR}:${TAG_BAZARR}
     container_name: bazarr
-    depends_on:
-      gluetun:
-        condition: service_healthy
-        restart: true
     volumes:
       - ${VOLUMES_ROOT}/bazarr:/config
       - ${DATA_ROOT}:/data
@@ -16,7 +12,8 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-    network_mode: service:gluetun
+    networks:
+      - home_server
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-L", "-f", "http://localhost:6767" ]
@@ -45,6 +42,7 @@ services:
       - BLOCK_MALICIOUS=on
       - BLOCK_ADS=on
       - BLOCK_SURVEILLANCE=on
+      - HTTPPROXY=on
       - UPDATER_PERIOD=24h
       - UPDATER_VPN_SERVICE_PROVIDERS=protonvpn
       - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
@@ -67,10 +65,6 @@ services:
   lidarr:
     image: ${IMAGE_LIDARR}:${TAG_LIDARR}
     container_name: lidarr
-    depends_on:
-      gluetun:
-        condition: service_healthy
-        restart: true
     volumes:
       - ${VOLUMES_ROOT}/lidarr:/config
       - /etc/localtime:/etc/localtime:ro
@@ -78,7 +72,8 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-    network_mode: service:gluetun
+    networks:
+      - home_server
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8686/ping" ]
@@ -158,10 +153,6 @@ services:
   radarr:
     image: ${IMAGE_RADARR}:${TAG_RADARR}
     container_name: radarr
-    depends_on:
-      gluetun:
-        condition: service_healthy
-        restart: true
     volumes:
       - ${VOLUMES_ROOT}/radarr:/config
       - ${DATA_ROOT}:/data
@@ -170,7 +161,8 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-    network_mode: service:gluetun
+    networks:
+      - home_server
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:7878/ping" ]
@@ -188,10 +180,6 @@ services:
   readarr:
     image: ${IMAGE_READARR}:${TAG_READARR}
     container_name: readarr
-    depends_on:
-      gluetun:
-        condition: service_healthy
-        restart: true
     volumes:
       - ${VOLUMES_ROOT}/readarr:/config
       - ${DATA_ROOT}:/data
@@ -200,7 +188,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    network_mode: service:gluetun
+    networks:
+      - home_server
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8787/ping" ]
@@ -234,10 +223,6 @@ services:
   sonarr:
     image: ${IMAGE_SONARR}:${TAG_SONARR}
     container_name: sonarr
-    depends_on:
-      gluetun:
-        condition: service_healthy
-        restart: true
     volumes:
       - ${VOLUMES_ROOT}/sonarr:/config
       - ${DATA_ROOT}:/data
@@ -246,7 +231,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    network_mode: service:gluetun
+    networks:
+      - home_server
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8989/ping" ]
