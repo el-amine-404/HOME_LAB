@@ -69,37 +69,37 @@
         icon: sonarr
         href: http://sonarr.homelab.lan
         description: TV Show Management
-        siteMonitor: http://gluetun:8989
+        siteMonitor: http://sonarr:8989
         statusStyle: "dot"
     - Radarr:
         icon: radarr
         href: http://radarr.homelab.lan
         description: Movie Management
-        siteMonitor: http://gluetun:7878
+        siteMonitor: http://radarr:7878
         statusStyle: "dot"
     - Lidarr:
         icon: lidarr
         href: http://lidarr.homelab.lan
         description: Music Management
-        siteMonitor: http://gluetun:8686
+        siteMonitor: http://lidarr:8686
         statusStyle: "dot"
     - Readarr:
         icon: readarr
         href: http://readarr.homelab.lan
         description: Book Management
-        siteMonitor: http://gluetun:8787
+        siteMonitor: http://readarr:8787
         statusStyle: "dot"
     - Prowlarr:
         icon: prowlarr
         href: http://prowlarr.homelab.lan
         description: Indexer Manager
-        siteMonitor: http://prowlarr:9696/ping
+        siteMonitor: http://gluetun:9696/ping
         statusStyle: "dot"
     - Bazarr:
         icon: bazarr
         href: http://bazarr.homelab.lan
         description: Subtitle Manager
-        siteMonitor: http://gluetun:6767
+        siteMonitor: http://bazarr:6767
         statusStyle: "dot"
     - qBittorrent:
         icon: qbittorrent
