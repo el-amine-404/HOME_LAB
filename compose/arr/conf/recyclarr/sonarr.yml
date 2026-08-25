@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
+sonarr:
+  # One instance per base_url: recyclarr drops instances that share a URL.
+  # quality_definition is per-instance, and `anime` is the permissive one
+  # (5 MB/min floor vs 69.1 for series) so anime encodes are not size-rejected.
+  main:
+    base_url: http://sonarr:8989
+    api_key: !env_var SONARR_API_KEY
+
+    quality_definition:
+      type: anime
+
+    quality_profiles:
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f  # [Anime] Remux-1080p
+        name: Anime
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 76a5053bdb2d1e4a8f16a69a37d46c12  # Remux + WEB 2160p
+        name: TV
+        reset_unmatched_scores:
+          enabled: true
+
+    custom_formats:
+      - trash_ids:
+          - 418f50b10f1907201b6cfdf881f467b7  # Anime Dual Audio
+        assign_scores_to:
+          - name: Anime
+            score: 2000
+
+    media_naming:
+      series: jellyfin-tvdb
+      season: default
+      episodes:
+        rename: true
+        anime: default
+        standard: default
+        daily: default

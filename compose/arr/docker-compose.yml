@@ -222,10 +222,12 @@ services:
       - home_server
     volumes:
       - ${VOLUMES_ROOT}/recyclarr:/config
+      - ${CONFIGS_ROOT}/arr/conf/recyclarr:/config/configs:ro
     environment:
       - TZ=${TZ}
       - CRON_SCHEDULE=@daily
-      - RECYCLARR_CREATE_CONFIG=true
+      - SONARR_API_KEY=${SONARR_API_KEY}
+      - RADARR_API_KEY=${RADARR_API_KEY}
 
   sonarr:
     image: ${IMAGE_SONARR}:${TAG_SONARR}

@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
+radarr:
+  movies:
+    base_url: http://radarr:7878
+    api_key: !env_var RADARR_API_KEY
+
+    quality_definition:
+      type: movie
+
+    quality_profiles:
+      - trash_id: fd161a61e3ab826d3a22d53f935696dd  # Remux + WEB 2160p
+        name: Movies
+        reset_unmatched_scores:
+          enabled: true
+
+    custom_format_groups:
+      add:
+        - trash_id: 9d5acd8f1da78dfbae788182f7605200  # [Audio] Audio Formats
+        - trash_id: ef20e67b95a381fb3bc6d1f06ea24f46  # [HDR Formats] HDR
+
+    media_naming:
+      folder: jellyfin-tmdb
+      movie:
+        rename: true
+        standard: jellyfin-tmdb
