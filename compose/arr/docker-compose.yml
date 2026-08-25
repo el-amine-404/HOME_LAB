@@ -15,6 +15,16 @@ services:
     networks:
       - home_server
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: [ "CMD", "curl", "-L", "-f", "http://localhost:6767" ]
       interval: 45s
@@ -81,6 +91,16 @@ services:
       home_server:
         ipv4_address: 172.19.10.13
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8686/ping" ]
       interval: 30s
@@ -108,6 +128,16 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9696/ping" ]
       interval: 30s
@@ -138,6 +168,16 @@ services:
       - WEBUI_PORT=${QBITTORRENT_WEBUI_PORT}
     network_mode: service:gluetun
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: ping -c 1 www.google.com || exit 1
       interval: 60s
@@ -170,6 +210,16 @@ services:
       home_server:
         ipv4_address: 172.19.10.12
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:7878/ping" ]
       interval: 30s
@@ -198,6 +248,16 @@ services:
       home_server:
         ipv4_address: 172.19.10.14
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8787/ping" ]
       interval: 45s
@@ -244,6 +304,16 @@ services:
       home_server:
         ipv4_address: 172.19.10.11
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8989/ping" ]
       interval: 30s
@@ -270,6 +340,20 @@ services:
       gluetun:
         condition: service_healthy
         restart: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    # read_only is not possible here: undetected-chromedriver patches its own
+    # binary at runtime. cap_drop + no-new-privileges + pids_limit still apply.
+    tmpfs:
+      - /tmp:size=512m,mode=1777
+    cpus: 0.5
+    mem_limit: 1gb
+    mem_reservation: 256mb
+    mem_swappiness: 0
+    memswap_limit: 1gb
+    pids_limit: 512
 
 networks:
   home_server:
