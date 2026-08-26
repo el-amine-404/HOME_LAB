@@ -1,0 +1,165 @@
+name: ${PAPERLESS_PROJECT_NAME}
+services:
+
+  paperless-db:
+    image: ${IMAGE_PAPERLESS_DB}:${TAG_PAPERLESS_DB}
+    container_name: paperless-db
+    environment:
+      - POSTGRES_DB=${PAPERLESS_DB_NAME}
+      - POSTGRES_USER=${PAPERLESS_DB_USER}
+      - POSTGRES_PASSWORD=${PAPERLESS_DB_PASSWORD}
+      - TZ=${TZ}
+    volumes:
+      - ${VOLUMES_ROOT}/paperless/db:/var/lib/postgresql/data
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${PAPERLESS_DB_USER} -d ${PAPERLESS_DB_NAME}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    cpus: 0.5
+    mem_limit: 512mb
+    mem_reservation: 128mb
+    mem_swappiness: 0
+    memswap_limit: 512mb
+
+  paperless-redis:
+    image: ${IMAGE_PAPERLESS_REDIS}:${TAG_PAPERLESS_REDIS}
+    container_name: paperless-redis
+    command: [ "valkey-server", "--save", "60", "1", "--appendonly", "no" ]
+    volumes:
+      - ${VOLUMES_ROOT}/paperless/redis:/data
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "ping" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    cpus: 0.25
+    mem_limit: 256mb
+    mem_reservation: 64mb
+    mem_swappiness: 0
+    memswap_limit: 256mb
+
+  paperless-tika:
+    image: ${IMAGE_PAPERLESS_TIKA}:${TAG_PAPERLESS_TIKA}
+    container_name: paperless-tika
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9998/tika" ]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    cpus: 0.5
+    mem_limit: 1gb
+    mem_reservation: 256mb
+    mem_swappiness: 0
+    memswap_limit: 1gb
+
+  paperless:
+    image: ${IMAGE_PAPERLESS}:${TAG_PAPERLESS}
+    container_name: paperless
+    depends_on:
+      paperless-db:
+        condition: service_healthy
+      paperless-redis:
+        condition: service_healthy
+      paperless-tika:
+        condition: service_started
+    environment:
+      - TZ=${TZ}
+      - USERMAP_UID=${PUID}
+      - USERMAP_GID=${PGID}
+      - PAPERLESS_TIME_ZONE=${TZ}
+      - PAPERLESS_REDIS=redis://paperless-redis:6379
+      - PAPERLESS_DBENGINE=postgresql
+      - PAPERLESS_DBHOST=paperless-db
+      - PAPERLESS_DBNAME=${PAPERLESS_DB_NAME}
+      - PAPERLESS_DBUSER=${PAPERLESS_DB_USER}
+      - PAPERLESS_DBPASS=${PAPERLESS_DB_PASSWORD}
+      - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
+      - PAPERLESS_URL=${PAPERLESS_URL}
+      - PAPERLESS_ADMIN_USER=${PAPERLESS_ADMIN_USER}
+      - PAPERLESS_ADMIN_PASSWORD=${PAPERLESS_ADMIN_PASSWORD}
+      - PAPERLESS_OCR_LANGUAGE=${PAPERLESS_OCR_LANGUAGE}
+      - PAPERLESS_OCR_LANGUAGES=${PAPERLESS_OCR_LANGUAGES}
+      - PAPERLESS_TIKA_ENABLED=1
+      - PAPERLESS_TIKA_ENDPOINT=http://paperless-tika:9998
+      - PAPERLESS_TIKA_GOTENBERG_ENDPOINT=http://gotenberg:3000
+      - PAPERLESS_CONSUMER_POLLING=60
+      - PAPERLESS_CONSUMER_RECURSIVE=true
+      - PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS=true
+      - PAPERLESS_TASK_WORKERS=1
+      - PAPERLESS_THREADS_PER_WORKER=2
+      - PAPERLESS_AI_ENABLED=${PAPERLESS_AI_ENABLED}
+      - PAPERLESS_AI_LLM_BACKEND=ollama
+      - PAPERLESS_AI_LLM_ENDPOINT=http://ollama:11434
+      - PAPERLESS_AI_LLM_MODEL=${PAPERLESS_AI_LLM_MODEL}
+      - PAPERLESS_AI_LLM_EMBEDDING_BACKEND=huggingface
+      - PAPERLESS_AI_LLM_EMBEDDING_MODEL=${PAPERLESS_AI_LLM_EMBEDDING_MODEL}
+      - PAPERLESS_AI_LLM_REQUEST_TIMEOUT=${PAPERLESS_AI_LLM_REQUEST_TIMEOUT}
+      - PAPERLESS_AI_LLM_OUTPUT_LANGUAGE=${PAPERLESS_AI_LLM_OUTPUT_LANGUAGE}
+    volumes:
+      - ${VOLUMES_ROOT}/paperless/data:/usr/src/paperless/data
+      - ${DATA_ROOT}/documents/media:/usr/src/paperless/media
+      - ${DATA_ROOT}/documents/export:/usr/src/paperless/export
+      - ${DATA_ROOT}/documents/consume:/usr/src/paperless/consume
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - ${HOST_LOOPBACK_IP}:${PAPERLESS_HTTP_PORT}:8000
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+      - FOWNER
+    healthcheck:
+      test: [ "CMD", "curl", "-fs", "-S", "--max-time", "5", "http://localhost:8000" ]
+      interval: 60s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
+    cpus: 2.0
+    mem_limit: 3gb
+    mem_reservation: 512mb
+    mem_swappiness: 0
+    memswap_limit: 3gb
+
+networks:
+  home_server:
+    external: true
+    name: home_server

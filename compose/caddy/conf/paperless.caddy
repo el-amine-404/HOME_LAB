@@ -1,0 +1,4 @@
+http://paperless.homelab.lan {
+  import localSubnets
+	reverse_proxy @localSubnets http://paperless:8000
+}

@@ -177,6 +177,27 @@
           url: http://filebrowser:80
           username: "{{HOMEPAGE_VAR_FILEBROWSER_USER}}"
           password: "{{HOMEPAGE_VAR_FILEBROWSER_PASS}}"
+    - Paperless:
+        icon: paperless-ngx
+        href: http://paperless.homelab.lan
+        description: Documents & OCR
+        siteMonitor: http://paperless:8000
+        statusStyle: "dot"
+        widget:
+          type: paperlessngx
+          url: http://paperless:8000
+          key: "{{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}"
+    - Paperless-GPT:
+        icon: mdi-file-document-edit
+        href: http://paperless-gpt.homelab.lan
+        description: LLM OCR & Tagging
+        siteMonitor: http://paperless-gpt:8080
+        statusStyle: "dot"
+    - Ollama:
+        icon: ollama
+        description: Local LLM Runtime
+        ping: http://ollama:11434
+        statusStyle: "dot"
     - Gotenberg:
         icon: gotenberg
         href: http://gotenberg.homelab.lan

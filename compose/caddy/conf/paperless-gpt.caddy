@@ -1,0 +1,4 @@
+http://paperless-gpt.homelab.lan {
+  import localSubnets
+	reverse_proxy @localSubnets http://paperless-gpt:8080
+}

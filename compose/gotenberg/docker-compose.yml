@@ -6,19 +6,12 @@ services:
     restart: unless-stopped
     command:
       - gotenberg
-      - --chromium-disable-routes
-      - --api-enable-basic-auth
-      - --api-timeout=120s
-    environment:
-      - GOTENBERG_API_BASIC_AUTH_USERNAME=${GOTENBERG_USERNAME}
-      - GOTENBERG_API_BASIC_AUTH_PASSWORD=${GOTENBERG_PASSWORD}
+      - --api-timeout=${GOTENBERG_API_TIMEOUT}
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
-    ports:
-      - ${HOST_LOOPBACK_IP}:${GOTENBERG_HTTP_PORT}:3000
     networks:
       - home_server
     mem_limit: 5gb
