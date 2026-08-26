@@ -39,6 +39,7 @@ services:
   paperless-redis:
     image: ${IMAGE_PAPERLESS_REDIS}:${TAG_PAPERLESS_REDIS}
     container_name: paperless-redis
+    user: ${PUID}:${PGID}
     command: [ "valkey-server", "--save", "60", "1", "--appendonly", "no" ]
     volumes:
       - ${VOLUMES_ROOT}/paperless/redis:/data
