@@ -1,58 +1,7 @@
 ---
 # For configuration options and examples, please see:
 # https://gethomepage.dev/configs/services/
-
-- Infrastructure:
-    - Portainer:
-        icon: portainer
-        href: http://portainer.homelab.lan
-        description: Container Management
-        siteMonitor: http://portainer-ce:9000
-        statusStyle: "dot"
-
-- Observability:
-    - Dozzle:
-        icon: dozzle
-        href: http://dozzle.homelab.lan
-        description: Real-time Log Viewer
-        siteMonitor: http://dozzle:8080
-        statusStyle: "dot"
-    - Uptime Kuma:
-        icon: uptime-kuma
-        href: http://uptimekuma.homelab.lan/status/potato-homelab
-        description: Service Monitor
-        siteMonitor: http://uptime-kuma:3001
-        statusStyle: "dot"
-
-- Utilities:
-    - FileBrowser:
-        icon: filebrowser
-        href: http://filebrowser.homelab.lan
-        description: Web File Manager
-        siteMonitor: http://filebrowser:80
-        statusStyle: "dot"
-    - Gotenberg:
-        icon: gotenberg
-        href: http://gotenberg.homelab.lan
-        description: PDF Conversion API
-        ping: http://gotenberg:3000
-        statusStyle: "dot"
-
-- Network:
-    - AdGuard Home:
-        icon: adguard-home
-        href: http://adh.homelab.lan
-        description: Network-wide Ad Blocking
-        siteMonitor: http://192.168.1.3:3000
-        statusStyle: "dot"
-
 - Media:
-    - Navidrome:
-        icon: navidrome
-        href: http://navidrome.homelab.lan
-        description: Music Server
-        siteMonitor: http://navidrome:4533/ping
-        statusStyle: "dot"
     - Jellyfin:
         icon: jellyfin
         href: http://jellyfin.homelab.lan
@@ -65,45 +14,162 @@
           key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
           enableBlocks: true
           enableNowPlaying: true
+    - Navidrome:
+        icon: navidrome
+        href: http://navidrome.homelab.lan
+        description: Music Server
+        siteMonitor: http://navidrome:4533/ping
+        statusStyle: "dot"
+        widget:
+          type: navidrome
+          url: http://navidrome:4533
+          user: "{{HOMEPAGE_VAR_NAVIDROME_USER}}"
+          token: "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}"
+          salt: "{{HOMEPAGE_VAR_NAVIDROME_SALT}}"
+
+- Library:
     - Sonarr:
         icon: sonarr
         href: http://sonarr.homelab.lan
         description: TV Show Management
         siteMonitor: http://sonarr:8989
         statusStyle: "dot"
+        widget:
+          type: sonarr
+          url: http://sonarr:8989
+          key: "{{HOMEPAGE_VAR_SONARR_KEY}}"
+          enableQueue: true
     - Radarr:
         icon: radarr
         href: http://radarr.homelab.lan
         description: Movie Management
         siteMonitor: http://radarr:7878
         statusStyle: "dot"
-    - Lidarr:
-        icon: lidarr
-        href: http://lidarr.homelab.lan
-        description: Music Management
-        siteMonitor: http://lidarr:8686
-        statusStyle: "dot"
-    - Readarr:
-        icon: readarr
-        href: http://readarr.homelab.lan
-        description: Book Management
-        siteMonitor: http://readarr:8787
-        statusStyle: "dot"
-    - Prowlarr:
-        icon: prowlarr
-        href: http://prowlarr.homelab.lan
-        description: Indexer Manager
-        siteMonitor: http://gluetun:9696/ping
-        statusStyle: "dot"
+        widget:
+          type: radarr
+          url: http://radarr:7878
+          key: "{{HOMEPAGE_VAR_RADARR_KEY}}"
+          enableQueue: true
     - Bazarr:
         icon: bazarr
         href: http://bazarr.homelab.lan
         description: Subtitle Manager
         siteMonitor: http://bazarr:6767
         statusStyle: "dot"
+        widget:
+          type: bazarr
+          url: http://bazarr:6767
+          key: "{{HOMEPAGE_VAR_BAZARR_KEY}}"
+    - Lidarr:
+        icon: lidarr
+        href: http://lidarr.homelab.lan
+        description: Music Management
+        siteMonitor: http://lidarr:8686
+        statusStyle: "dot"
+        widget:
+          type: lidarr
+          url: http://lidarr:8686
+          key: "{{HOMEPAGE_VAR_LIDARR_KEY}}"
+    - Readarr:
+        icon: readarr
+        href: http://readarr.homelab.lan
+        description: Book Management
+        siteMonitor: http://readarr:8787
+        statusStyle: "dot"
+        widget:
+          type: readarr
+          url: http://readarr:8787
+          key: "{{HOMEPAGE_VAR_READARR_KEY}}"
+
+- Downloads:
+    - Prowlarr:
+        icon: prowlarr
+        href: http://prowlarr.homelab.lan
+        description: Indexer Manager
+        siteMonitor: http://gluetun:9696/ping
+        statusStyle: "dot"
+        widget:
+          type: prowlarr
+          url: http://gluetun:9696
+          key: "{{HOMEPAGE_VAR_PROWLARR_KEY}}"
     - qBittorrent:
         icon: qbittorrent
         href: http://qbittorrent.homelab.lan
         description: Torrent Client
         siteMonitor: http://gluetun:8080
+        statusStyle: "dot"
+        widget:
+          type: qbittorrent
+          url: http://gluetun:8080
+          username: "{{HOMEPAGE_VAR_QBIT_USER}}"
+          password: "{{HOMEPAGE_VAR_QBIT_PASS}}"
+
+- Network:
+    - AdGuard Home:
+        icon: adguard-home
+        href: http://adh.homelab.lan
+        description: Network-wide Ad Blocking
+        siteMonitor: http://192.168.1.3:3000
+        statusStyle: "dot"
+        widget:
+          type: adguard
+          url: http://192.168.1.3:3000
+          username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
+          password: "{{HOMEPAGE_VAR_ADGUARD_PASS}}"
+    - Gluetun:
+        icon: gluetun
+        href: http://qbittorrent.homelab.lan
+        description: VPN Gateway
+        siteMonitor: http://gluetun:8000/v1/publicip/ip
+        statusStyle: "dot"
+        widget:
+          type: gluetun
+          url: http://gluetun:8000
+
+- System:
+    - Portainer:
+        icon: portainer
+        href: http://portainer.homelab.lan
+        description: Container Management
+        siteMonitor: http://portainer-ce:9000
+        statusStyle: "dot"
+        widget:
+          type: portainer
+          url: http://portainer-ce:9000
+          env: 3
+          key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+    - Uptime Kuma:
+        icon: uptime-kuma
+        href: http://uptimekuma.homelab.lan/status/potato-homelab
+        description: Service Monitor
+        siteMonitor: http://uptime-kuma:3001
+        statusStyle: "dot"
+        widget:
+          type: uptimekuma
+          url: http://uptime-kuma:3001
+          slug: potato-homelab
+    - Dozzle:
+        icon: dozzle
+        href: http://dozzle.homelab.lan
+        description: Real-time Log Viewer
+        siteMonitor: http://dozzle:8080
+        statusStyle: "dot"
+
+- Utilities:
+    - FileBrowser:
+        icon: filebrowser
+        href: http://filebrowser.homelab.lan
+        description: Web File Manager
+        siteMonitor: http://filebrowser:80
+        statusStyle: "dot"
+        widget:
+          type: filebrowser
+          url: http://filebrowser:80
+          username: "{{HOMEPAGE_VAR_FILEBROWSER_USER}}"
+          password: "{{HOMEPAGE_VAR_FILEBROWSER_PASS}}"
+    - Gotenberg:
+        icon: gotenberg
+        href: http://gotenberg.homelab.lan
+        description: PDF Conversion API
+        ping: http://gotenberg:3000
         statusStyle: "dot"

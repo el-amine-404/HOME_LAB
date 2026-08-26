@@ -9,4 +9,19 @@ title: Potato homelab
 layout:
   Media:
     style: row
-    columns: 4
+    columns: 2
+  Library:
+    style: row
+    columns: 3
+  Downloads:
+    style: row
+    columns: 2
+  Network:
+    style: row
+    columns: 2
+  System:
+    style: row
+    columns: 3
+  Utilities:
+    style: row
+    columns: 2
