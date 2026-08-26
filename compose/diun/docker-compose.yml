@@ -10,12 +10,13 @@ services:
       - ${CONFIGS_ROOT}/diun/conf/diun.yml:/diun.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
+    user: ${PUID}:${PGID}
+    group_add:
+      - ${DOCKER_GID}
     environment:
       - TZ=${TZ}
       - LOG_LEVEL=info
       - LOG_JSON=false
-      - PUID=${PUID}
-      - PGID=${PGID}
       - DIUN_NOTIF_DISCORD_WEBHOOKURL=${DISCORD_WEBHOOK_DIUN}
     healthcheck:
       test: ["CMD", "diun", "healthcheck"]
