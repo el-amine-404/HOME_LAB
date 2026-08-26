@@ -14,11 +14,6 @@ services:
         max-file: "3"
     networks:
       - home_server
-    mem_limit: 5gb
-    mem_reservation: 2gb
-    memswap_limit: 5gb
-    mem_swappiness: 0
-    cpus: 1.0
     ulimits:
       nofile:
         soft: 8192

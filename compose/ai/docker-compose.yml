@@ -87,11 +87,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-    cpus: 0.5
-    mem_limit: 1gb
-    mem_reservation: 128mb
-    mem_swappiness: 0
-    memswap_limit: 1gb
 
 networks:
   home_server:

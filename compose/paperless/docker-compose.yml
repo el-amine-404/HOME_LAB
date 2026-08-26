@@ -78,11 +78,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-    cpus: 0.5
-    mem_limit: 1gb
-    mem_reservation: 256mb
-    mem_swappiness: 0
-    memswap_limit: 1gb
 
   paperless:
     image: ${IMAGE_PAPERLESS}:${TAG_PAPERLESS}
@@ -154,11 +149,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 180s
-    cpus: 2.0
-    mem_limit: 3gb
-    mem_reservation: 512mb
-    mem_swappiness: 0
-    memswap_limit: 3gb
 
 networks:
   home_server:
