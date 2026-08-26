@@ -9,9 +9,10 @@
         siteMonitor: http://seerr:5055/api/v1/status
         statusStyle: "dot"
         widget:
-          type: jellyseerr
+          type: seerr
           url: http://seerr:5055
           key: "{{HOMEPAGE_VAR_SEERR_KEY}}"
+          fields: ["pending", "approved", "completed"]
     - Jellyfin:
         icon: jellyfin
         href: http://jellyfin.homelab.lan
