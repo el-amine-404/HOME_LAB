@@ -144,7 +144,7 @@ services:
         restart: true
     volumes:
       - ${VOLUMES_ROOT}/qbittorrent:/config
-      - ${DATA_ROOT}:/data
+      - ${DATA_ROOT}/torrents:/data/torrents
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
