@@ -2,6 +2,16 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/configs/services/
 - Media:
+    - Seerr:
+        icon: jellyseerr
+        href: http://seerr.homelab.lan
+        description: Request Movies & Shows
+        siteMonitor: http://seerr:5055/api/v1/status
+        statusStyle: "dot"
+        widget:
+          type: jellyseerr
+          url: http://seerr:5055
+          key: "{{HOMEPAGE_VAR_SEERR_KEY}}"
     - Jellyfin:
         icon: jellyfin
         href: http://jellyfin.homelab.lan

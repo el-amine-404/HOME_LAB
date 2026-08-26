@@ -1,0 +1,35 @@
+name: ${SEERR_PROJECT_NAME}
+services:
+  seerr:
+    image: ${IMAGE_SEERR}:${TAG_SEERR}
+    container_name: seerr
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TZ}
+      - LOG_LEVEL=info
+      - PORT=${SEERR_HTTP_PORT}
+    volumes:
+      - ${VOLUMES_ROOT}/seerr:/app/config
+      - /etc/localtime:/etc/localtime:ro
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - home_server
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${SEERR_HTTP_PORT}/api/v1/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    cpus: 0.5
+    mem_limit: 1gb
+    mem_reservation: 256mb
+    mem_swappiness: 0
+    memswap_limit: 1gb
+networks:
+  home_server:
+    external: true
+    name: home_server

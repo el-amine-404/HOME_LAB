@@ -9,7 +9,7 @@ title: Potato homelab
 layout:
   Media:
     style: row
-    columns: 2
+    columns: 3
   Library:
     style: row
     columns: 3

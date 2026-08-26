@@ -1,0 +1,4 @@
+http://seerr.homelab.lan {
+  import localSubnets
+	reverse_proxy @localSubnets http://seerr:5055
+}
