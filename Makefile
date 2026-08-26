@@ -182,7 +182,18 @@ setup: check-env
 		$(VOLUMES_ROOT)/radarr \
 		$(VOLUMES_ROOT)/readarr \
 		$(VOLUMES_ROOT)/recyclarr \
-		$(VOLUMES_ROOT)/sonarr
+		$(VOLUMES_ROOT)/sonarr \
+		$(VOLUMES_ROOT)/seerr \
+		$(VOLUMES_ROOT)/paperless/data \
+		$(VOLUMES_ROOT)/paperless/db \
+		$(VOLUMES_ROOT)/paperless/redis \
+		$(VOLUMES_ROOT)/ollama
+
+	@echo "==> Creating data directories..."
+	sudo mkdir -p \
+		$(DATA_ROOT)/documents/media \
+		$(DATA_ROOT)/documents/export \
+		$(DATA_ROOT)/documents/consume
 
 	@echo "==> Setting ownership..."
 	sudo chown -R $(PUID):$(PGID) \
