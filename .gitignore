@@ -8,7 +8,9 @@ mnt/
 # The real env file lives next to .env.example and carries live secrets
 # (WireGuard key, DB password). Only the .example template is tracked.
 .env
+.env.*
 **/.env
+**/.env.*
 !**/.env.example
 
 # Belt-and-braces: never track credential material regardless of location.
