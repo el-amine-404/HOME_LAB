@@ -50,6 +50,8 @@ services:
         condition: service_healthy
     environment:
       - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
       - PAPERLESS_BASE_URL=http://paperless:8000
       - PAPERLESS_API_TOKEN=${PAPERLESS_API_TOKEN}
       - LLM_PROVIDER=ollama
