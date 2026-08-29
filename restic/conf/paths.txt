@@ -1,0 +1,13 @@
+# One absolute path per line. Missing paths are ignored by backup.sh so this
+# file can also contain paths for services that will be installed later.
+/home/potato/batlab
+/home/potato/batdots
+/home/potato/.config
+/home/potato/.ssh
+/root/.config/rclone
+/etc
+/mnt/docker-volumes
+/mnt/storage/data/documents
+
+# Add the actual Immich upload/library path here when Immich is deployed.
+# /mnt/storage/data/photos

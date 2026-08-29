@@ -1,0 +1,15 @@
+[Unit]
+Description=Check the Batlab Restic repository
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/home/potato/batlab/restic/scripts/check.sh
+Nice=15
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target

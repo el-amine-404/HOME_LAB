@@ -1,0 +1,24 @@
+# Replaceable downloads and media. These guards remain useful if a broader
+# storage path is added to paths.txt later.
+/mnt/storage/data/media/**
+/mnt/storage/data/torrents/**
+/mnt/storage/data/usenet/**
+/mnt/storage/data/.quarantine/**
+
+# Models can be downloaded again and are several gigabytes.
+/mnt/docker-volumes/ollama/**
+
+# Redis is transient queue/cache state; Paperless rebuilds it.
+/mnt/docker-volumes/paperless/redis/**
+
+# Regenerable caches, logs, artwork, and downloaded definitions.
+/mnt/docker-volumes/**/cache/**
+/mnt/docker-volumes/**/Cache/**
+/mnt/docker-volumes/**/logs/**
+/mnt/docker-volumes/**/log/**
+/mnt/docker-volumes/**/MediaCover/**
+/mnt/docker-volumes/recyclarr/**/repositories/**
+/mnt/docker-volumes/prowlarr/**/Definitions/**
+
+# Temporary files must not become part of a snapshot.
+/mnt/docker-volumes/database-dumps/*.tmp

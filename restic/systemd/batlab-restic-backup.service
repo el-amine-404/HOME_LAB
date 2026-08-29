@@ -1,0 +1,17 @@
+[Unit]
+Description=Back up the Batlab server with Restic
+Wants=network-online.target
+After=network-online.target docker.service
+RequiresMountsFor=/mnt/docker-volumes /mnt/storage/data/documents
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/home/potato/batlab/restic/scripts/backup.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target

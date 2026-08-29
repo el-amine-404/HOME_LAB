@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the Batlab Restic repository weekly
+
+[Timer]
+OnCalendar=Sun *-*-* 03:30:00
+Persistent=true
+RandomizedDelaySec=20m
+Unit=batlab-restic-check.service
+
+[Install]
+WantedBy=timers.target
