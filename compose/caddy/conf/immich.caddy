@@ -1,0 +1,4 @@
+http://immich.homelab.lan {
+	import localSubnets
+	reverse_proxy @localSubnets http://immich-server:2283
+}

@@ -166,6 +166,9 @@ setup: check-env
 		$(VOLUMES_ROOT)/homepage/icons \
 		$(VOLUMES_ROOT)/homepage/images \
 		$(VOLUMES_ROOT)/homepage/logs \
+		$(VOLUMES_ROOT)/immich/postgres \
+		$(VOLUMES_ROOT)/immich/redis \
+		$(VOLUMES_ROOT)/immich/model-cache \
 		$(VOLUMES_ROOT)/jellyfin/conf \
 		$(VOLUMES_ROOT)/jellyfin/data \
 		$(VOLUMES_ROOT)/jellyfin/cache \
@@ -191,6 +194,7 @@ setup: check-env
 
 	@echo "==> Creating data directories..."
 	sudo mkdir -p \
+		$(DATA_ROOT)/immich \
 		$(DATA_ROOT)/documents/media \
 		$(DATA_ROOT)/documents/export \
 		$(DATA_ROOT)/documents/consume

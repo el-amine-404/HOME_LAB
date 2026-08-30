@@ -2,6 +2,12 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/configs/services/
 - Media:
+    - Immich:
+        icon: immich
+        href: http://immich.homelab.lan
+        description: Family Photos & Videos
+        siteMonitor: http://immich-server:2283/api/server/ping
+        statusStyle: "dot"
     - Seerr:
         icon: jellyseerr
         href: http://seerr.homelab.lan

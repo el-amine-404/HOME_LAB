@@ -1,0 +1,107 @@
+name: ${IMMICH_PROJECT_NAME}
+
+services:
+  immich-server:
+    image: ${IMAGE_IMMICH}:${TAG_IMMICH}
+    container_name: immich-server
+    environment:
+      TZ: ${TZ}
+      DB_HOSTNAME: immich-db
+      DB_USERNAME: ${IMMICH_DB_USERNAME}
+      DB_PASSWORD: ${IMMICH_DB_PASSWORD}
+      DB_DATABASE_NAME: ${IMMICH_DB_DATABASE_NAME}
+      REDIS_HOSTNAME: immich-redis
+      IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning:3003
+    volumes:
+      - ${IMMICH_UPLOAD_LOCATION}:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - ${HOST_LOOPBACK_IP}:${IMMICH_HTTP_PORT}:2283
+    depends_on:
+      immich-redis:
+        condition: service_healthy
+      immich-db:
+        condition: service_healthy
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      disable: false
+    mem_limit: 4gb
+    mem_reservation: 1gb
+    mem_swappiness: 0
+    memswap_limit: 4gb
+
+  immich-machine-learning:
+    image: ${IMAGE_IMMICH_ML}:${TAG_IMMICH}
+    container_name: immich-machine-learning
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_ROOT}/immich/model-cache:/cache
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      disable: false
+    mem_limit: 3gb
+    mem_reservation: 512mb
+    mem_swappiness: 0
+    memswap_limit: 3gb
+
+  immich-redis:
+    image: ${IMAGE_IMMICH_REDIS}:${TAG_IMMICH_REDIS}
+    container_name: immich-redis
+    command: ["valkey-server", "--save", "60", "1"]
+    volumes:
+      - ${VOLUMES_ROOT}/immich/redis:/data
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    mem_limit: 256mb
+    mem_reservation: 64mb
+    mem_swappiness: 0
+    memswap_limit: 256mb
+
+  immich-db:
+    image: ${IMAGE_IMMICH_POSTGRES}:${TAG_IMMICH_POSTGRES}
+    container_name: immich-db
+    environment:
+      POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
+      POSTGRES_USER: ${IMMICH_DB_USERNAME}
+      POSTGRES_DB: ${IMMICH_DB_DATABASE_NAME}
+      POSTGRES_INITDB_ARGS: --data-checksums
+    volumes:
+      - ${VOLUMES_ROOT}/immich/postgres:/var/lib/postgresql/data
+    shm_size: 128mb
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${IMMICH_DB_USERNAME} -d ${IMMICH_DB_DATABASE_NAME}"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    mem_limit: 2gb
+    mem_reservation: 512mb
+    mem_swappiness: 0
+    memswap_limit: 2gb
+
+networks:
+  home_server:
+    external: true
+    name: home_server

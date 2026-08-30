@@ -1,0 +1,12 @@
+# Optional overlay for an existing, filesystem-managed photo archive.
+# The source directory must exist before this overlay is used. Docker Compose
+# will fail instead of silently creating a root-owned directory at that path.
+services:
+  immich-server:
+    volumes:
+      - type: bind
+        source: ${IMMICH_EXTERNAL_LIBRARY}
+        target: /external/library
+        read_only: true
+        bind:
+          create_host_path: false
