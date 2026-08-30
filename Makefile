@@ -200,11 +200,36 @@ setup: check-env
 		$(DATA_ROOT)/documents/consume
 
 	@echo "==> Setting ownership..."
+	sudo chown $(PUID):$(PGID) \
+		$(SITES_ROOT)
 	sudo chown -R $(PUID):$(PGID) \
-		"$(REPO_ROOT)" \
-		$(SITES_ROOT) \
-		$(MEDIA_ROOT) \
-		$(VOLUMES_ROOT)
+		$(SITES_ROOT)/caddy/site \
+		$(VOLUMES_ROOT)/caddy/data \
+		$(VOLUMES_ROOT)/caddy/config \
+		$(VOLUMES_ROOT)/diun/data \
+		$(VOLUMES_ROOT)/filebrowser \
+		$(VOLUMES_ROOT)/homepage/icons \
+		$(VOLUMES_ROOT)/homepage/images \
+		$(VOLUMES_ROOT)/homepage/logs \
+		$(VOLUMES_ROOT)/jellyfin/conf \
+		$(VOLUMES_ROOT)/jellyfin/data \
+		$(VOLUMES_ROOT)/jellyfin/cache \
+		$(VOLUMES_ROOT)/jellyfin/log \
+		$(VOLUMES_ROOT)/navidrome/data \
+		$(VOLUMES_ROOT)/bazarr \
+		$(VOLUMES_ROOT)/lidarr \
+		$(VOLUMES_ROOT)/prowlarr \
+		$(VOLUMES_ROOT)/qbittorrent \
+		$(VOLUMES_ROOT)/radarr \
+		$(VOLUMES_ROOT)/readarr \
+		$(VOLUMES_ROOT)/recyclarr \
+		$(VOLUMES_ROOT)/sonarr \
+		$(VOLUMES_ROOT)/seerr \
+		$(VOLUMES_ROOT)/paperless/data \
+		$(VOLUMES_ROOT)/paperless/redis \
+		$(DATA_ROOT)/documents/media \
+		$(DATA_ROOT)/documents/export \
+		$(DATA_ROOT)/documents/consume
 
 	@echo "==> Symlinking .env to all stacks..."
 	@for d in compose/*; do \
