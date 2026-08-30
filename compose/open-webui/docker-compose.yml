@@ -1,0 +1,45 @@
+name: ${OPEN_WEBUI_PROJECT_NAME}
+
+services:
+  open-webui:
+    image: ${IMAGE_OPEN_WEBUI}:${TAG_OPEN_WEBUI}
+    container_name: open-webui
+    environment:
+      TZ: ${TZ}
+      OLLAMA_BASE_URL: http://ollama:11434
+      WEBUI_URL: http://open-webui.homelab.lan
+      WEBUI_SECRET_KEY: ${OPEN_WEBUI_SECRET_KEY:?Set OPEN_WEBUI_SECRET_KEY in compose/.env}
+      WEBUI_NAME: Batlab AI
+      WEBUI_AUTH: "true"
+      ENABLE_SIGNUP: "true"
+      ENABLE_OPENAI_API: "false"
+      ENABLE_ORJSON: "true"
+      ANONYMIZED_TELEMETRY: "false"
+      DO_NOT_TRACK: "true"
+      SCARF_NO_ANALYTICS: "true"
+    volumes:
+      - ${VOLUMES_ROOT}/open-webui:/app/backend/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - ${HOST_LOOPBACK_IP}:${OPEN_WEBUI_HTTP_PORT}:8080
+    networks:
+      - home_server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    stop_grace_period: 30s
+    mem_limit: 2gb
+    mem_reservation: 256mb
+    mem_swappiness: 0
+    memswap_limit: 2gb
+
+networks:
+  home_server:
+    external: true
+    name: home_server

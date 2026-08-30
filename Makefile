@@ -190,7 +190,8 @@ setup: check-env
 		$(VOLUMES_ROOT)/paperless/data \
 		$(VOLUMES_ROOT)/paperless/db \
 		$(VOLUMES_ROOT)/paperless/redis \
-		$(VOLUMES_ROOT)/ollama
+		$(VOLUMES_ROOT)/ollama \
+		$(VOLUMES_ROOT)/open-webui
 
 	@echo "==> Creating data directories..."
 	sudo mkdir -p \

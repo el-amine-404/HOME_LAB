@@ -1,0 +1,4 @@
+http://open-webui.homelab.lan {
+	import localSubnets
+	reverse_proxy @localSubnets http://open-webui:8080
+}

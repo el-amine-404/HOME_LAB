@@ -24,3 +24,5 @@ This document provides a summary of the self-hosted services configured in this 
 | **Dozzle**       | A simple, real-time web-based log viewer for tracking active Docker container logs.                      | [dozzle.dev](https://dozzle.dev)                                         |
 | **Gotenberg**    | A developer-friendly API for converting HTML, Markdown, and Office documents into PDFs.                  | [gotenberg.dev](https://gotenberg.dev)                                   |
 | **File Browser** | A lightweight utility providing a web-based file management interface for your directories.              | [filebrowser.org](https://filebrowser.org)                               |
+| **Ollama**       | A local model runtime used by private AI services without sending prompts to a hosted model provider.     | [ollama.com](https://ollama.com)                                         |
+| **Open WebUI**   | A private, multi-user chat interface connected to the local Ollama runtime.                               | [docs.openwebui.com](https://docs.openwebui.com)                         |

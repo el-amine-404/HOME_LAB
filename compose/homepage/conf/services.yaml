@@ -211,6 +211,12 @@
         description: Local LLM Runtime
         ping: http://ollama:11434
         statusStyle: "dot"
+    - Open WebUI:
+        icon: open-webui
+        href: http://open-webui.homelab.lan
+        description: Private Local AI Chat
+        siteMonitor: http://open-webui:8080/health
+        statusStyle: "dot"
     - Gotenberg:
         icon: gotenberg
         href: http://gotenberg.homelab.lan
